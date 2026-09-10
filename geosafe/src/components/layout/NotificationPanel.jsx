@@ -5,7 +5,7 @@ import {
   Info,
   X,
 } from "lucide-react";
-
+import "./NotificationPanel.css";
 import { notifications } from "../../data/notifications";
 
 
