@@ -9,6 +9,7 @@ import Response from "./pages/Response";
 import FieldDashboard from "./pages/FieldDashboard";
 import ReportIncident from "./pages/ReportIncident";
 import RiskMap from "./pages/RiskMap";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/field" element={<FieldDashboard />} />
         <Route path="/field/report" element={<ReportIncident />} />
         <Route path="/risk-map" element={<RiskMap />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </BrowserRouter>
   );
