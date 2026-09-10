@@ -274,7 +274,7 @@
   backdrop-filter: blur(14px);
   position: sticky;
   top: 0;
-  z-index: 40;
+  z-index: 5000;
 }
 
 .breadcrumb {
@@ -2792,4 +2792,289 @@
   .drawer-status-row > div:last-child {
     border-bottom: 0;
   }
+}
+/* =========================================
+   NOTIFICATION PANEL
+========================================= */
+
+.notification-wrapper {
+  position: relative;
+  z-index: 10000;
+}
+
+.notification-button {
+  position: relative;
+}
+
+
+.notification-button.notification-active {
+  border-color: rgba(59, 130, 246, 0.45);
+  background: rgba(59, 130, 246, 0.08);
+}
+
+
+.notification-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+
+  width: 350px;
+
+  background: #0d1117;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.55),
+    0 0 30px rgba(59, 130, 246, 0.05);
+
+  overflow: hidden;
+
+  /* Always stay above Leaflet */
+  z-index: 9999;
+}
+
+
+.notification-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 18px 15px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.notification-panel-eyebrow {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+
+  color: #6f7d91;
+}
+
+
+.notification-panel-header h3 {
+  margin: 0;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  color: #f1f5f9;
+}
+
+
+.notification-close {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 7px;
+
+  background: transparent;
+  color: #7d8998;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.notification-close:hover {
+  color: #e5e7eb;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+
+.notification-list {
+  max-height: 320px;
+  overflow-y: auto;
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #263244 transparent;
+}
+
+
+/* Chrome / Edge / Safari */
+
+.notification-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.notification-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.notification-list::-webkit-scrollbar-thumb {
+  background: #263244;
+  border-radius: 10px;
+}
+
+.notification-list::-webkit-scrollbar-thumb:hover {
+  background: #3a4a61;
+}
+
+
+.notification-item {
+  display: flex;
+  gap: 11px;
+
+  padding: 13px 16px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+  transition: background 0.2s ease;
+}
+
+.notification-item:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+
+.notification-icon {
+  width: 32px;
+  height: 32px;
+
+  flex: 0 0 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+}
+
+
+.notification-critical .notification-icon {
+  color: #ff4d5a;
+  background: rgba(255, 77, 90, 0.10);
+}
+
+
+.notification-high .notification-icon {
+  color: #ff9f43;
+  background: rgba(255, 159, 67, 0.10);
+}
+
+
+.notification-moderate .notification-icon {
+  color: #f6c945;
+  background: rgba(246, 201, 69, 0.10);
+}
+
+
+.notification-info .notification-icon {
+  color: #4da3ff;
+  background: rgba(77, 163, 255, 0.10);
+}
+
+
+.notification-content {
+  min-width: 0;
+  flex: 1;
+}
+
+
+.notification-item-top {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+
+.notification-item-top strong {
+  color: #e7edf5;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+.notification-unread-dot {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #4da3ff;
+
+  box-shadow: 0 0 7px rgba(77, 163, 255, 0.7);
+}
+
+
+.notification-content p {
+  margin: 5px 0 7px;
+
+  color: #8793a3;
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+
+.notification-time {
+  color: #596576;
+
+  font-size: 9px;
+  font-weight: 500;
+}
+
+
+.notification-panel-footer {
+  padding: 11px 18px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+.notification-panel-footer button {
+  width: 100%;
+
+  padding: 8px;
+
+  border: 0;
+  border-radius: 6px;
+
+  background: transparent;
+
+  color: #5da9ff;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.notification-panel-footer button:hover {
+  background: rgba(77, 163, 255, 0.07);
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+  .notification-panel {
+    position: fixed;
+
+    top: 68px;
+    right: 12px;
+    left: 12px;
+
+    width: auto;
+  }
+
 }
