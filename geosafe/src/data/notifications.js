@@ -6,6 +6,7 @@ export const notifications = [
     message: "NH-05 Landslide risk score increased to 96.",
     time: "2 min ago",
     unread: true,
+    incidentId: "GS-1042",
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ export const notifications = [
     message: "NH-05 has been partially blocked.",
     time: "8 min ago",
     unread: true,
+    incidentId: "GS-1042",
   },
   {
     id: 3,
@@ -22,6 +24,7 @@ export const notifications = [
     message: "Mashobra sector requires active monitoring.",
     time: "14 min ago",
     unread: true,
+    incidentId: "GS-1041",
   },
   {
     id: 4,
@@ -30,5 +33,6 @@ export const notifications = [
     message: "Unit R-07 assigned to Kufri sector.",
     time: "21 min ago",
     unread: true,
+    incidentId: "GS-1038",
   },
 ];

@@ -25,8 +25,29 @@
   background: #090c11;
   border-right: 1px solid var(--border);
   z-index: 1000;
+  overflow-y: auto;
+
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: #263244 transparent;
+}
+/* Chrome / Edge / Safari */
+.sidebar::-webkit-scrollbar {
+  width: 5px;
 }
 
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #263244;
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #3a4a61;
+}
 .sidebar-brand {
   display: flex;
   align-items: center;
@@ -7591,4 +7612,27 @@
   .reports-modal-overlay {
     padding: 10px;
   }
+}
+/* INCIDENT DRAWER CUSTOM SCROLLBAR */
+
+.incident-drawer {
+  scrollbar-width: thin;
+  scrollbar-color: #263244 transparent;
+}
+
+.incident-drawer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.incident-drawer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.incident-drawer::-webkit-scrollbar-thumb {
+  background: #263244;
+  border-radius: 10px;
+}
+
+.incident-drawer::-webkit-scrollbar-thumb:hover {
+  background: #3a4a61;
 }

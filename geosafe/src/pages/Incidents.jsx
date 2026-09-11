@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+
 import {
   Search,
   Filter,
@@ -18,11 +20,13 @@ import PageContainer from "../components/layout/PageContainer";
 
 import { incidents } from "../data/mockData";
 
+
 function getStatus(risk) {
   if (risk >= 90) return "ACTIVE";
   if (risk >= 75) return "REVIEW";
   return "MONITOR";
 }
+
 
 function getSeverity(risk) {
   if (risk >= 90) return "critical";
@@ -30,12 +34,32 @@ function getSeverity(risk) {
   return "moderate";
 }
 
+
 function Incidents() {
+  const [searchParams] = useSearchParams();
+
   const [search, setSearch] = useState("");
   const [severity, setSeverity] = useState("all");
   const [status, setStatus] = useState("all");
-  const [selectedIncident, setSelectedIncident] = useState(null);
 
+  const [selectedIncident, setSelectedIncident] = useState(() => {
+    const incidentId = searchParams.get("incident");
+
+    if (!incidentId) {
+      return null;
+    }
+
+    return (
+      incidents.find(
+        (item) => item.id === incidentId
+      ) || null
+    );
+  });
+
+
+  /*
+    FILTER INCIDENTS
+  */
   const filteredIncidents = useMemo(() => {
     return incidents.filter((incident) => {
       const incidentSeverity = getSeverity(incident.risk);
@@ -53,10 +77,12 @@ function Incidents() {
           .includes(search.toLowerCase());
 
       const matchesSeverity =
-        severity === "all" || incidentSeverity === severity;
+        severity === "all" ||
+        incidentSeverity === severity;
 
       const matchesStatus =
-        status === "all" || incidentStatus === status;
+        status === "all" ||
+        incidentStatus === status;
 
       return (
         matchesSearch &&
@@ -66,14 +92,19 @@ function Incidents() {
     });
   }, [search, severity, status]);
 
+
   return (
     <div className="app-shell">
 
+      {/* SIDEBAR */}
       <Sidebar />
+
 
       <div className="main-area">
 
+        {/* TOPBAR */}
         <Topbar />
+
 
         <PageContainer>
 
@@ -88,7 +119,11 @@ function Incidents() {
                 INCIDENT OPERATIONS
               </div>
 
-              <h1>Incident Management</h1>
+
+              <h1>
+                Incident Management
+              </h1>
+
 
               <p>
                 Monitor, investigate and coordinate
@@ -96,6 +131,7 @@ function Incidents() {
               </p>
 
             </div>
+
 
             <div className="page-live-status">
               <span />
@@ -115,17 +151,20 @@ function Incidents() {
               <small>Immediate action</small>
             </div>
 
+
             <div className="incident-metric high">
               <span>HIGH RISK</span>
               <strong>27</strong>
               <small>Active monitoring</small>
             </div>
 
+
             <div className="incident-metric active">
               <span>ACTIVE</span>
               <strong>08</strong>
               <small>Open incidents</small>
             </div>
+
 
             <div className="incident-metric resolved">
               <span>RESOLVED</span>
@@ -153,6 +192,7 @@ function Incidents() {
                 }
               />
 
+
               {search && (
                 <button
                   className="clear-search"
@@ -167,7 +207,10 @@ function Incidents() {
 
             <div className="filter-group">
 
+              {/* SEVERITY FILTER */}
+
               <div className="select-wrapper">
+
                 <Filter size={13} />
 
                 <select
@@ -194,8 +237,11 @@ function Incidents() {
                 </select>
 
                 <ChevronDown size={13} />
+
               </div>
 
+
+              {/* STATUS FILTER */}
 
               <div className="select-wrapper">
 
@@ -231,13 +277,14 @@ function Incidents() {
           </div>
 
 
-          {/* TABLE */}
+          {/* INCIDENT TABLE */}
 
           <div className="incidents-table-container">
 
             <div className="table-header">
 
               <div>
+
                 <span className="panel-eyebrow">
                   INCIDENT REGISTER
                 </span>
@@ -245,7 +292,9 @@ function Incidents() {
                 <h2>
                   Current Incidents
                 </h2>
+
               </div>
+
 
               <span className="result-count">
                 {filteredIncidents.length} incidents
@@ -255,6 +304,8 @@ function Incidents() {
 
 
             <div className="incident-table">
+
+              {/* TABLE HEADER */}
 
               <div className="incident-table-head">
 
@@ -268,7 +319,10 @@ function Incidents() {
               </div>
 
 
+              {/* TABLE ROWS */}
+
               {filteredIncidents.length > 0 ? (
+
                 filteredIncidents.map((incident) => {
 
                   const incidentSeverity =
@@ -277,7 +331,9 @@ function Incidents() {
                   const incidentStatus =
                     getStatus(incident.risk);
 
+
                   return (
+
                     <div
                       className="incident-table-row"
                       key={incident.id}
@@ -285,6 +341,8 @@ function Incidents() {
                         setSelectedIncident(incident)
                       }
                     >
+
+                      {/* INCIDENT */}
 
                       <div className="table-incident-name">
 
@@ -307,6 +365,8 @@ function Incidents() {
                       </div>
 
 
+                      {/* LOCATION */}
+
                       <div className="table-location">
 
                         <MapPin size={12} />
@@ -318,24 +378,34 @@ function Incidents() {
                       </div>
 
 
+                      {/* RISK */}
+
                       <div>
+
                         <span
                           className={`table-risk ${incidentSeverity}`}
                         >
                           {incident.risk}%
                         </span>
+
                       </div>
 
 
+                      {/* STATUS */}
+
                       <div>
+
                         <span
                           className={`status-badge ${incidentStatus.toLowerCase()}`}
                         >
                           <span />
                           {incidentStatus}
                         </span>
+
                       </div>
 
+
+                      {/* TIME */}
 
                       <div className="table-time">
 
@@ -345,6 +415,8 @@ function Incidents() {
 
                       </div>
 
+
+                      {/* OPEN */}
 
                       <button
                         className="incident-open-button"
@@ -357,9 +429,13 @@ function Incidents() {
                       </button>
 
                     </div>
+
                   );
+
                 })
+
               ) : (
+
                 <div className="empty-incidents">
 
                   <Search size={22} />
@@ -373,6 +449,7 @@ function Incidents() {
                   </span>
 
                 </div>
+
               )}
 
             </div>
@@ -389,12 +466,21 @@ function Incidents() {
       {selectedIncident && (
         <>
 
+          {/* BACKDROP */}
+
           <div
             className="drawer-backdrop"
-            onClick={() => setSelectedIncident(null)}
+            onClick={() =>
+              setSelectedIncident(null)
+            }
           />
 
+
+          {/* DRAWER */}
+
           <aside className="incident-drawer">
+
+            {/* DRAWER HEADER */}
 
             <div className="drawer-header">
 
@@ -410,9 +496,12 @@ function Incidents() {
 
               </div>
 
+
               <button
                 className="drawer-close"
-                onClick={() => setSelectedIncident(null)}
+                onClick={() =>
+                  setSelectedIncident(null)
+                }
               >
                 <X size={17} />
               </button>
@@ -420,7 +509,11 @@ function Incidents() {
             </div>
 
 
+            {/* DRAWER CONTENT */}
+
             <div className="drawer-content">
+
+              {/* RISK SCORE */}
 
               <div
                 className={`drawer-risk ${getSeverity(
@@ -430,20 +523,27 @@ function Incidents() {
 
                 <div>
 
-                  <span>RISK SCORE</span>
+                  <span>
+                    RISK SCORE
+                  </span>
 
                   <strong>
                     {selectedIncident.risk}
                   </strong>
 
-                  <small>/ 100</small>
+                  <small>
+                    / 100
+                  </small>
 
                 </div>
+
 
                 <ShieldAlert size={25} />
 
               </div>
 
+
+              {/* TITLE */}
 
               <div className="drawer-title">
 
@@ -451,52 +551,75 @@ function Incidents() {
                   {selectedIncident.title}
                 </span>
 
+
                 <div className="drawer-location">
+
                   <MapPin size={13} />
+
                   {selectedIncident.location}
+
                 </div>
 
               </div>
 
 
+              {/* STATUS */}
+
               <div className="drawer-status-row">
 
                 <div>
-                  <span>SEVERITY</span>
+
+                  <span>
+                    SEVERITY
+                  </span>
 
                   <strong>
                     {getSeverity(
                       selectedIncident.risk
                     ).toUpperCase()}
                   </strong>
+
                 </div>
 
+
                 <div>
-                  <span>STATUS</span>
+
+                  <span>
+                    STATUS
+                  </span>
 
                   <strong>
                     {getStatus(
                       selectedIncident.risk
                     )}
                   </strong>
+
                 </div>
 
+
                 <div>
-                  <span>REPORTED</span>
+
+                  <span>
+                    REPORTED
+                  </span>
 
                   <strong>
                     {selectedIncident.time}
                   </strong>
+
                 </div>
 
               </div>
 
+
+              {/* ENVIRONMENTAL SIGNALS */}
 
               <div className="drawer-section">
 
                 <div className="drawer-section-title">
                   ENVIRONMENTAL SIGNALS
                 </div>
+
 
                 <div className="drawer-signals">
 
@@ -505,15 +628,18 @@ function Incidents() {
                     <strong>185 mm</strong>
                   </div>
 
+
                   <div>
                     <span>Slope</span>
                     <strong>38°</strong>
                   </div>
 
+
                   <div>
                     <span>Soil Moisture</span>
                     <strong>82%</strong>
                   </div>
+
 
                   <div>
                     <span>Road Risk</span>
@@ -525,11 +651,14 @@ function Incidents() {
               </div>
 
 
+              {/* FIELD OBSERVATION */}
+
               <div className="drawer-section">
 
                 <div className="drawer-section-title">
                   FIELD OBSERVATION
                 </div>
+
 
                 <div className="field-observation">
                   Visible soil movement and surface
@@ -540,12 +669,15 @@ function Incidents() {
               </div>
 
 
+              {/* ACTIONS */}
+
               <div className="drawer-actions">
 
                 <button className="drawer-map-button">
                   <Navigation size={15} />
                   View on Map
                 </button>
+
 
                 <button className="drawer-dispatch-button">
                   <Radio size={15} />
@@ -564,5 +696,6 @@ function Incidents() {
     </div>
   );
 }
+
 
 export default Incidents;
