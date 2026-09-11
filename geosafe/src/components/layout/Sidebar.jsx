@@ -129,10 +129,15 @@ function Sidebar() {
         </NavLink>
 
 
-        <button className="settings-button">
+        <NavLink
+          to="/settings"
+          className={({ isActive }) =>
+            `settings-button ${isActive ? "active" : ""}`
+          }
+        >
           <Settings size={16} />
           <span>System Settings</span>
-        </button>
+        </NavLink>
 
 
         <div className="sidebar-footer">
