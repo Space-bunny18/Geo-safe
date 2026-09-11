@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   MapContainer,
   TileLayer,
@@ -10,6 +12,7 @@ import "leaflet/dist/leaflet.css";
 
 import { riskZones } from "../../data/mockData";
 
+
 function getRiskColor(risk) {
   if (risk >= 90) return "#ff4d5a";
   if (risk >= 75) return "#ff9f43";
@@ -18,9 +21,40 @@ function getRiskColor(risk) {
   return "#38c98a";
 }
 
+
 function RiskMap() {
+  const [mapMode, setMapMode] = useState("risk");
+
+
+  const mapLayers = {
+    risk: {
+      label: "Live Risk",
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      attribution: "&copy; OpenStreetMap contributors",
+    },
+
+    terrain: {
+      label: "Terrain",
+      url: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+      attribution:
+        "&copy; OpenStreetMap contributors, SRTM | OpenTopoMap",
+    },
+
+    roads: {
+      label: "Road Network",
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      attribution: "&copy; OpenStreetMap contributors",
+    },
+  };
+
+
+  const activeLayer = mapLayers[mapMode];
+
+
   return (
     <div className="risk-map">
+
+      {/* MAP */}
 
       <MapContainer
         center={[31.1048, 77.1734]}
@@ -28,15 +62,23 @@ function RiskMap() {
         scrollWheelZoom={true}
         zoomControl={false}
       >
+
         <TileLayer
-          attribution="&copy; OpenStreetMap contributors"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          key={mapMode}
+          attribution={activeLayer.attribution}
+          url={activeLayer.url}
         />
+
 
         <ZoomControl position="bottomright" />
 
+
+        {/* RISK ZONES */}
+
         {riskZones.map((zone) => {
+
           const riskColor = getRiskColor(zone.risk);
+
 
           return (
             <CircleMarker
@@ -46,65 +88,134 @@ function RiskMap() {
               pathOptions={{
                 color: riskColor,
                 fillColor: riskColor,
-                fillOpacity: 0.72,
+                fillOpacity:
+                  mapMode === "roads"
+                    ? 0.55
+                    : 0.72,
                 weight: 2,
               }}
             >
+
               <Popup>
+
                 <div className="map-popup">
+
                   <span className="map-popup-id">
-                    INCIDENT
+                    RISK ZONE
                   </span>
 
-                  <strong>{zone.name}</strong>
 
-                  <span>{zone.type}</span>
+                  <strong>
+                    {zone.name}
+                  </strong>
+
+
+                  <span>
+                    {zone.type}
+                  </span>
+
 
                   <div className="map-popup-risk">
-                    <span>Risk Score</span>
-                    <strong>{zone.risk}%</strong>
+
+                    <span>
+                      Risk Score
+                    </span>
+
+                    <strong>
+                      {zone.risk}%
+                    </strong>
+
                   </div>
+
                 </div>
+
               </Popup>
+
             </CircleMarker>
           );
+
         })}
+
       </MapContainer>
+
 
       {/* MAP HEADER */}
 
       <div className="map-overlay-top">
+
         <div>
+
           <span className="panel-eyebrow">
             GEOSPATIAL INTELLIGENCE
           </span>
 
-          <h3>Live Risk Map</h3>
+
+          <h3>
+            Live Risk Map
+          </h3>
+
         </div>
 
+
         <div className="map-live">
+
           <span />
+
           LIVE
+
         </div>
+
       </div>
+
 
       {/* MAP CONTROLS */}
 
       <div className="map-controls">
 
-        <button className="map-control active">
+        <button
+          className={`map-control ${
+            mapMode === "risk" ? "active" : ""
+          }`}
+          onClick={() => setMapMode("risk")}
+        >
           Risk
         </button>
 
-        <button className="map-control">
+
+        <button
+          className={`map-control ${
+            mapMode === "terrain" ? "active" : ""
+          }`}
+          onClick={() => setMapMode("terrain")}
+        >
           Terrain
         </button>
 
-        <button className="map-control">
+
+        <button
+          className={`map-control ${
+            mapMode === "roads" ? "active" : ""
+          }`}
+          onClick={() => setMapMode("roads")}
+        >
           Roads
         </button>
 
       </div>
+
+
+      {/* ACTIVE LAYER INDICATOR */}
+
+      <div className="map-layer-status">
+
+        <span className="map-layer-status-dot" />
+
+        <span>
+          {activeLayer.label}
+        </span>
+
+      </div>
+
 
       {/* LEGEND */}
 
@@ -114,24 +225,40 @@ function RiskMap() {
           RISK LEVEL
         </div>
 
+
         <div className="legend-item">
+
           <span className="legend-dot critical" />
+
           Critical
+
         </div>
 
+
         <div className="legend-item">
+
           <span className="legend-dot high" />
+
           High
+
         </div>
 
+
         <div className="legend-item">
+
           <span className="legend-dot moderate" />
+
           Moderate
+
         </div>
 
+
         <div className="legend-item">
+
           <span className="legend-dot low" />
+
           Low
+
         </div>
 
       </div>
@@ -139,5 +266,6 @@ function RiskMap() {
     </div>
   );
 }
+
 
 export default RiskMap;
