@@ -8706,3 +8706,243 @@ html::-webkit-scrollbar-thumb:hover {
     padding: 18px !important;
   }
 }
+/* =================================
+   GEOSAFE PAGE TRANSITIONS
+   ================================= */
+
+.main-area {
+  animation: geosafePageEnter 0.35s ease-out;
+}
+
+@keyframes geosafePageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Smooth interactive transitions */
+
+.nav-item,
+.field-link,
+.settings-button,
+.stat-card,
+.environment-card,
+.response-summary,
+.notification-item,
+.road-row,
+.incident-row,
+button {
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* Accessibility */
+
+button:focus-visible,
+a:focus-visible {
+  outline: 1px solid #72a9ff;
+  outline-offset: 2px;
+}
+
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .main-area {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+/* =================================
+   GEOSAFE LIVE STATUS POLISH
+   ================================= */
+
+.pulse-dot,
+.header-status .pulse-dot,
+.page-live-status span,
+.live-indicator,
+.status-dot {
+  position: relative;
+  flex-shrink: 0;
+}
+
+
+/* Subtle live pulse */
+
+.pulse-dot::after,
+.page-live-status span::after,
+.live-indicator::after,
+.status-dot::after {
+  content: "";
+
+  position: absolute;
+  inset: -3px;
+
+  border-radius: 50%;
+
+  border: 1px solid currentColor;
+
+  opacity: 0;
+
+  animation: geosafeLivePulse 2s ease-out infinite;
+}
+
+
+@keyframes geosafeLivePulse {
+
+  0% {
+    transform: scale(0.7);
+    opacity: 0.5;
+  }
+
+  70% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+
+}
+
+
+/* Keep status indicators visually stable */
+
+.header-status,
+.page-live-status,
+.live-clock {
+  white-space: nowrap;
+}
+
+
+/* Stop animation for users who prefer reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .pulse-dot::after,
+  .page-live-status span::after,
+  .live-indicator::after,
+  .status-dot::after {
+    animation: none;
+  }
+
+}
+/* =================================
+   GEOSAFE FINAL INTERACTION POLISH
+   ================================= */
+
+/* Cards */
+
+.stat-card,
+.environment-card,
+.response-summary,
+.highest-risk-card,
+.environment-signals-card {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.stat-card:hover,
+.environment-card:hover,
+.response-summary:hover,
+.highest-risk-card:hover,
+.environment-signals-card:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(114, 169, 255, 0.18);
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+
+/* Navigation */
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+
+/* Buttons */
+
+button:not(:disabled):hover {
+  cursor: pointer;
+}
+
+
+/* Slight press feedback */
+
+button:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+
+/* Notification items */
+
+.notification-item {
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.notification-item:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+
+/* Risk operational items */
+
+.risk-operational-item {
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.risk-operational-item:hover {
+  background: rgba(255, 255, 255, 0.035);
+
+  border-color:
+    rgba(114, 169, 255, 0.16);
+}
+
+
+/* Don't animate when reduced motion is enabled */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .stat-card,
+  .environment-card,
+  .response-summary,
+  .highest-risk-card,
+  .environment-signals-card,
+  .notification-item,
+  .risk-operational-item {
+    transition: none;
+  }
+
+}

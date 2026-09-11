@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   CloudRain,
   Droplets,
@@ -13,7 +14,7 @@ import StatCard from "../components/dashboard/StatCard";
 import IncidentList from "../components/dashboard/IncidentList";
 import ActivityFeed from "../components/dashboard/ActivityFeed";
 import RiskMap from "../components/map/RiskMapView";
-
+import StatusState from "../components/common/StatusState";
 import {
   dashboardStats,
   incidents,
@@ -22,6 +23,11 @@ import {
 
 
 function Dashboard() {
+  const [dashboardLoading, setDashboardLoading] =
+  useState(false);
+
+const [dashboardError, setDashboardError] =
+  useState(false);
 
   return (
     <div className="app-shell">
@@ -33,7 +39,11 @@ function Dashboard() {
         <Topbar />
 
         <PageContainer>
-
+          <StatusState
+            type="empty"
+            title="No active incidents"
+            message="No incidents are currently available in this operational region."
+          />
           {/* HEADER */}
 
           <div className="dashboard-header">
