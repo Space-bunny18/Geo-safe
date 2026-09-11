@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 import Sidebar from "../components/layout/Sidebar";
 import Topbar from "../components/layout/Topbar";
@@ -13,6 +13,7 @@ import {
   Droplets,
   Route,
   ArrowUpRight,
+  Navigation,
 } from "lucide-react";
 
 import { riskZones } from "../data/mockData";
@@ -27,12 +28,60 @@ function getSeverity(risk) {
 }
 
 
+function getTrackedUnit(trackId) {
+  const units = {
+    "31.1048,77.1734": {
+      unit: "R-07",
+      team: "Rapid Response Alpha",
+      incident: "GS-1042",
+      location: "NH-05 Landslide",
+    },
+
+    "31.1312,77.2345": {
+      unit: "R-04",
+      team: "Mountain Rescue Unit",
+      incident: "GS-1041",
+      location: "Mashobra Soil Movement",
+    },
+
+    "31.0974,77.2673": {
+      unit: "R-11",
+      team: "Road Response Bravo",
+      incident: "GS-1038",
+      location: "Kufri Road Crack",
+    },
+
+    "31.1217,77.3587": {
+      unit: "R-03",
+      team: "Field Assessment Team",
+      incident: "GS-1035",
+      location: "Theog Slope Instability",
+    },
+  };
+
+  return units[trackId] || null;
+}
+
+
 function RiskMap() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [selectedZone, setSelectedZone] = useState(
     riskZones[0]
   );
+
+  const trackCoordinates =
+    searchParams.get("track");
+
+  const targetPosition = trackCoordinates
+    ? trackCoordinates
+        .split(",")
+        .map(Number)
+    : null;
+
+  const trackedUnit =
+    getTrackedUnit(trackCoordinates);
 
 
   function handleViewIncident() {
@@ -45,10 +94,13 @@ function RiskMap() {
       4: "GS-1035",
     };
 
-    const incidentId = incidentMap[selectedZone.id];
+    const incidentId =
+      incidentMap[selectedZone.id];
 
     if (incidentId) {
-      navigate(`/incidents?incident=${incidentId}`);
+      navigate(
+        `/incidents?incident=${incidentId}`
+      );
     }
   }
 
@@ -110,7 +162,77 @@ function RiskMap() {
 
             <RiskMapView
               onZoneSelect={setSelectedZone}
+              targetPosition={targetPosition}
             />
+
+
+            {/* TRACKED RESPONSE UNIT */}
+
+            {trackedUnit && (
+              <div className="tracked-unit-panel">
+
+                <div className="tracked-unit-status">
+
+                  <span className="tracked-unit-pulse" />
+
+                  UNIT TRACKING ACTIVE
+
+                </div>
+
+
+                <div className="tracked-unit-main">
+
+                  <div className="tracked-unit-icon">
+                    <Navigation size={17} />
+                  </div>
+
+
+                  <div className="tracked-unit-info">
+
+                    <strong>
+                      {trackedUnit.unit}
+                    </strong>
+
+                    <span>
+                      {trackedUnit.team}
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <div className="tracked-unit-details">
+
+                  <div>
+
+                    <span>
+                      INCIDENT
+                    </span>
+
+                    <strong>
+                      {trackedUnit.incident}
+                    </strong>
+
+                  </div>
+
+
+                  <div>
+
+                    <span>
+                      LOCATION
+                    </span>
+
+                    <strong>
+                      {trackedUnit.location}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+              </div>
+            )}
 
           </div>
 
@@ -310,12 +432,17 @@ function RiskMap() {
                     </div>
 
                     <div>
-                      <span>RAINFALL</span>
+
+                      <span>
+                        RAINFALL
+                      </span>
+
                       <strong>
                         {selectedZone.id === 1
                           ? "185 mm"
                           : "142 mm"}
                       </strong>
+
                     </div>
 
                   </div>
@@ -328,12 +455,17 @@ function RiskMap() {
                     </div>
 
                     <div>
-                      <span>SLOPE</span>
+
+                      <span>
+                        SLOPE
+                      </span>
+
                       <strong>
                         {selectedZone.id === 1
                           ? "38°"
                           : "34°"}
                       </strong>
+
                     </div>
 
                   </div>
@@ -346,12 +478,17 @@ function RiskMap() {
                     </div>
 
                     <div>
-                      <span>SOIL MOISTURE</span>
+
+                      <span>
+                        SOIL MOISTURE
+                      </span>
+
                       <strong>
                         {selectedZone.id === 1
                           ? "82%"
                           : "76%"}
                       </strong>
+
                     </div>
 
                   </div>
@@ -364,14 +501,20 @@ function RiskMap() {
                     </div>
 
                     <div>
-                      <span>ROAD RISK</span>
+
+                      <span>
+                        ROAD RISK
+                      </span>
+
 
                       <strong>
+
                         {selectedZone.risk >= 90
                           ? "CRITICAL"
                           : selectedZone.risk >= 75
                           ? "HIGH"
                           : "MODERATE"}
+
                       </strong>
 
                     </div>

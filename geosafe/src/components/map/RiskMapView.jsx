@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   MapContainer,
@@ -6,6 +6,7 @@ import {
   CircleMarker,
   Popup,
   ZoomControl,
+  useMap,
 } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
@@ -20,9 +21,22 @@ function getRiskColor(risk) {
 
   return "#38c98a";
 }
+function MapTracker({ targetPosition }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!targetPosition) return;
+
+    map.flyTo(targetPosition, 14, {
+      duration: 1.2,
+    });
+  }, [map, targetPosition]);
+
+  return null;
+}
 
 
-function RiskMap({ onZoneSelect }) {
+function RiskMap({ onZoneSelect, targetPosition }) {
   const [mapMode, setMapMode] = useState("risk");
 
 
@@ -71,6 +85,7 @@ function RiskMap({ onZoneSelect }) {
 
 
         <ZoomControl position="bottomright" />
+        <MapTracker targetPosition={targetPosition} />
 
 
         {/* RISK ZONES */}

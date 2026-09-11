@@ -1,5 +1,8 @@
 import { useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import {
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import {
   Search,
   Filter,
@@ -99,6 +102,7 @@ function getStatusClass(status) {
 
 function Response() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("all");
@@ -756,7 +760,14 @@ function Response() {
 
             <div className="response-drawer-actions">
 
-              <button className="response-action-primary">
+              <button
+                className="response-action-primary"
+                onClick={() => {
+                  navigate(
+                    `/risk-map?track=${selectedResponse.coordinates}`
+                  );
+                }}
+              >
                 <Navigation size={15} />
                 Track Unit
               </button>
