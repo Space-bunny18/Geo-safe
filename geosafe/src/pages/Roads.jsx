@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   Search,
   Filter,
@@ -88,12 +90,24 @@ const roadData = [
 ];
 
 
+// Maps roads to their related incidents.
+// Roads without an active incident simply won't
+// show a dispatch action.
+const roadIncidentMap = {
+  "RD-204": "GS-1042",
+  "RD-198": "GS-1038",
+  "RD-191": "GS-1035",
+};
+
+
 function getSeverityClass(severity) {
   return `road-severity-${severity}`;
 }
 
 
 function Roads() {
+  const navigate = useNavigate();
+
   const [search, setSearch] = useState("");
   const [severityFilter, setSeverityFilter] = useState("all");
   const [selectedRoad, setSelectedRoad] = useState(null);
@@ -128,6 +142,41 @@ function Roads() {
   ).length;
 
 
+  function handleViewOnMap() {
+    if (!selectedRoad?.coordinates) {
+      return;
+    }
+
+    const coordinates = selectedRoad.coordinates;
+
+    setSelectedRoad(null);
+
+    navigate(
+      `/risk-map?track=${encodeURIComponent(coordinates)}`
+    );
+  }
+
+
+  function handleDispatchResponse() {
+    if (!selectedRoad) {
+      return;
+    }
+
+    const incidentId =
+      roadIncidentMap[selectedRoad.id];
+
+    if (!incidentId) {
+      return;
+    }
+
+    setSelectedRoad(null);
+
+    navigate(
+      `/response?incident=${incidentId}`
+    );
+  }
+
+
   return (
     <div className="app-shell">
 
@@ -146,6 +195,7 @@ function Roads() {
             <div className="roads-header">
 
               <div>
+
                 <div className="section-kicker">
                   <span className="kicker-line" />
                   NETWORK MONITORING
@@ -157,6 +207,7 @@ function Roads() {
                   Monitor road conditions, blockages and
                   infrastructure risk across monitored routes.
                 </p>
+
               </div>
 
 
@@ -173,6 +224,7 @@ function Roads() {
             <div className="roads-metrics">
 
               <div className="road-metric-card">
+
                 <div className="road-metric-icon critical">
                   <ShieldAlert size={17} />
                 </div>
@@ -181,10 +233,12 @@ function Roads() {
                   <span>Blocked Roads</span>
                   <strong>{blockedCount}</strong>
                 </div>
+
               </div>
 
 
               <div className="road-metric-card">
+
                 <div className="road-metric-icon high">
                   <AlertTriangle size={17} />
                 </div>
@@ -193,10 +247,12 @@ function Roads() {
                   <span>Restricted</span>
                   <strong>{restrictedCount}</strong>
                 </div>
+
               </div>
 
 
               <div className="road-metric-card">
+
                 <div className="road-metric-icon moderate">
                   <Radio size={17} />
                 </div>
@@ -205,10 +261,12 @@ function Roads() {
                   <span>High Risk Routes</span>
                   <strong>{highRiskCount}</strong>
                 </div>
+
               </div>
 
 
               <div className="road-metric-card">
+
                 <div className="road-metric-icon normal">
                   <Route size={17} />
                 </div>
@@ -217,6 +275,7 @@ function Roads() {
                   <span>Routes Monitored</span>
                   <strong>{roadData.length}</strong>
                 </div>
+
               </div>
 
             </div>
@@ -241,6 +300,7 @@ function Roads() {
 
                 {search && (
                   <button
+                    type="button"
                     className="roads-clear-search"
                     onClick={() => setSearch("")}
                   >
@@ -261,11 +321,25 @@ function Roads() {
                     setSeverityFilter(event.target.value)
                   }
                 >
-                  <option value="all">All Risk Levels</option>
-                  <option value="critical">Critical</option>
-                  <option value="high">High</option>
-                  <option value="moderate">Moderate</option>
-                  <option value="low">Low</option>
+                  <option value="all">
+                    All Risk Levels
+                  </option>
+
+                  <option value="critical">
+                    Critical
+                  </option>
+
+                  <option value="high">
+                    High
+                  </option>
+
+                  <option value="moderate">
+                    Moderate
+                  </option>
+
+                  <option value="low">
+                    Low
+                  </option>
                 </select>
 
               </div>
@@ -280,11 +354,13 @@ function Roads() {
               <div className="roads-panel-header">
 
                 <div>
+
                   <span className="panel-eyebrow">
                     ROAD NETWORK STATUS
                   </span>
 
                   <h2>Monitored Routes</h2>
+
                 </div>
 
                 <span className="roads-result-count">
@@ -299,6 +375,7 @@ function Roads() {
                 <table className="roads-table">
 
                   <thead>
+
                     <tr>
                       <th>ROAD</th>
                       <th>LOCATION</th>
@@ -308,6 +385,7 @@ function Roads() {
                       <th>UPDATED</th>
                       <th />
                     </tr>
+
                   </thead>
 
 
@@ -344,7 +422,9 @@ function Roads() {
 
                             <MapPin size={13} />
 
-                            <span>{road.location}</span>
+                            <span>
+                              {road.location}
+                            </span>
 
                           </div>
 
@@ -368,9 +448,12 @@ function Roads() {
 
                           <div className="road-risk">
 
-                            <strong>{road.risk}%</strong>
+                            <strong>
+                              {road.risk}%
+                            </strong>
 
                             <div className="road-risk-bar">
+
                               <span
                                 className={getSeverityClass(
                                   road.severity
@@ -379,6 +462,7 @@ function Roads() {
                                   width: `${road.risk}%`,
                                 }}
                               />
+
                             </div>
 
                           </div>
@@ -411,6 +495,7 @@ function Roads() {
                         <td>
 
                           <button
+                            type="button"
                             className="road-open-button"
                             onClick={(event) => {
                               event.stopPropagation();
@@ -438,7 +523,9 @@ function Roads() {
 
                     <Route size={28} />
 
-                    <strong>No roads found</strong>
+                    <strong>
+                      No roads found
+                    </strong>
 
                     <span>
                       Try changing your search or filter.
@@ -470,7 +557,9 @@ function Roads() {
 
           <aside
             className="road-drawer"
-            onClick={(event) => event.stopPropagation()}
+            onClick={(event) =>
+              event.stopPropagation()
+            }
           >
 
             <div className="road-drawer-header">
@@ -481,16 +570,23 @@ function Roads() {
                   ROAD DETAILS
                 </span>
 
-                <h2>{selectedRoad.name}</h2>
+                <h2>
+                  {selectedRoad.name}
+                </h2>
 
-                <span>{selectedRoad.route}</span>
+                <span>
+                  {selectedRoad.route}
+                </span>
 
               </div>
 
 
               <button
+                type="button"
                 className="road-drawer-close"
-                onClick={() => setSelectedRoad(null)}
+                onClick={() =>
+                  setSelectedRoad(null)
+                }
               >
                 <X size={18} />
               </button>
@@ -504,7 +600,9 @@ function Roads() {
 
                 <span>RISK SCORE</span>
 
-                <strong>{selectedRoad.risk}%</strong>
+                <strong>
+                  {selectedRoad.risk}%
+                </strong>
 
               </div>
 
@@ -523,22 +621,30 @@ function Roads() {
 
               <div>
                 <span>CONDITION</span>
-                <strong>{selectedRoad.condition}</strong>
+                <strong>
+                  {selectedRoad.condition}
+                </strong>
               </div>
 
               <div>
                 <span>TRAFFIC</span>
-                <strong>{selectedRoad.traffic}</strong>
+                <strong>
+                  {selectedRoad.traffic}
+                </strong>
               </div>
 
               <div>
                 <span>ACTIVE ISSUE</span>
-                <strong>{selectedRoad.issue}</strong>
+                <strong>
+                  {selectedRoad.issue}
+                </strong>
               </div>
 
               <div>
                 <span>LAST UPDATE</span>
-                <strong>{selectedRoad.updated}</strong>
+                <strong>
+                  {selectedRoad.updated}
+                </strong>
               </div>
 
             </div>
@@ -572,6 +678,7 @@ function Roads() {
                 {selectedRoad.condition === "Blocked" ? (
                   <>
                     <ShieldAlert size={17} />
+
                     <span>
                       Route is currently blocked.
                       Immediate response assessment
@@ -581,6 +688,7 @@ function Roads() {
                 ) : selectedRoad.condition === "Restricted" ? (
                   <>
                     <AlertTriangle size={17} />
+
                     <span>
                       Traffic restrictions are active
                       on this route.
@@ -589,6 +697,7 @@ function Roads() {
                 ) : (
                   <>
                     <CheckCircle2 size={17} />
+
                     <span>
                       Route remains operational under
                       current monitoring conditions.
@@ -603,12 +712,31 @@ function Roads() {
 
             <div className="road-drawer-actions">
 
-              <button className="road-action-primary">
+              {/* VIEW ON MAP */}
+
+              <button
+                type="button"
+                className="road-action-primary"
+                onClick={handleViewOnMap}
+                disabled={
+                  !selectedRoad?.coordinates
+                }
+              >
                 <Navigation size={15} />
                 View on Map
               </button>
 
-              <button className="road-action-secondary">
+
+              {/* DISPATCH RESPONSE */}
+
+              <button
+                type="button"
+                className="road-action-secondary"
+                onClick={handleDispatchResponse}
+                disabled={
+                  !roadIncidentMap[selectedRoad.id]
+                }
+              >
                 <Radio size={15} />
                 Dispatch Response
               </button>

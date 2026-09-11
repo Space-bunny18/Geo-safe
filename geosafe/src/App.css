@@ -8263,3 +8263,13 @@ html::-webkit-scrollbar-thumb:hover {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.reports-drawer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.reports-drawer-actions button {
+  flex: 1;
+  min-width: 120px;
+}

@@ -20,7 +20,9 @@ import {
   activities,
 } from "../data/mockData";
 
+
 function Dashboard() {
+
   return (
     <div className="app-shell">
 
@@ -54,9 +56,13 @@ function Dashboard() {
 
             </div>
 
+
             <div className="header-status">
+
               <span className="pulse-dot" />
+
               Live data stream
+
             </div>
 
           </div>
@@ -67,10 +73,12 @@ function Dashboard() {
           <div className="stats-grid">
 
             {dashboardStats.map((stat) => (
+
               <StatCard
                 key={stat.label}
                 {...stat}
               />
+
             ))}
 
           </div>
@@ -86,7 +94,9 @@ function Dashboard() {
 
             </div>
 
-            <IncidentList incidents={incidents} />
+            <IncidentList
+              incidents={incidents}
+            />
 
           </div>
 
@@ -94,7 +104,9 @@ function Dashboard() {
           {/* ENVIRONMENT */}
 
           <div className="section-heading">
+
             <div>
+
               <span className="panel-eyebrow">
                 ENVIRONMENTAL SIGNALS
               </span>
@@ -102,8 +114,11 @@ function Dashboard() {
               <h2>
                 Current Conditions
               </h2>
+
             </div>
+
           </div>
+
 
           <div className="environment-grid">
 
@@ -114,9 +129,19 @@ function Dashboard() {
               </div>
 
               <div>
-                <span>24H RAINFALL</span>
-                <strong>185 mm</strong>
-                <small>↑ 32% above threshold</small>
+
+                <span>
+                  24H RAINFALL
+                </span>
+
+                <strong>
+                  185 mm
+                </strong>
+
+                <small>
+                  ↑ 32% above threshold
+                </small>
+
               </div>
 
             </div>
@@ -129,9 +154,19 @@ function Dashboard() {
               </div>
 
               <div>
-                <span>SOIL MOISTURE</span>
-                <strong>82%</strong>
-                <small>High saturation detected</small>
+
+                <span>
+                  SOIL MOISTURE
+                </span>
+
+                <strong>
+                  82%
+                </strong>
+
+                <small>
+                  High saturation detected
+                </small>
+
               </div>
 
             </div>
@@ -144,9 +179,19 @@ function Dashboard() {
               </div>
 
               <div>
-                <span>AVG. SLOPE</span>
-                <strong>34.8°</strong>
-                <small>High instability potential</small>
+
+                <span>
+                  AVG. SLOPE
+                </span>
+
+                <strong>
+                  34.8°
+                </strong>
+
+                <small>
+                  High instability potential
+                </small>
+
               </div>
 
             </div>
@@ -159,9 +204,19 @@ function Dashboard() {
               </div>
 
               <div>
-                <span>RISK SIGNALS</span>
-                <strong>08</strong>
-                <small>3 newly detected</small>
+
+                <span>
+                  RISK SIGNALS
+                </span>
+
+                <strong>
+                  08
+                </strong>
+
+                <small>
+                  3 newly detected
+                </small>
+
               </div>
 
             </div>
@@ -173,13 +228,17 @@ function Dashboard() {
 
           <div className="bottom-grid">
 
-            <ActivityFeed activities={activities} />
+            <ActivityFeed
+              activities={activities}
+            />
+
 
             <div className="response-summary">
 
               <div className="panel-header">
 
                 <div>
+
                   <span className="panel-eyebrow">
                     RESPONSE STATUS
                   </span>
@@ -187,9 +246,11 @@ function Dashboard() {
                   <h3>
                     Emergency Operations
                   </h3>
+
                 </div>
 
               </div>
+
 
               <div className="response-main">
 
@@ -198,26 +259,43 @@ function Dashboard() {
                 </div>
 
                 <div>
-                  <strong>Active responses</strong>
+
+                  <strong>
+                    Active responses
+                  </strong>
+
                   <span>
                     Units currently deployed
                   </span>
+
                 </div>
 
               </div>
+
 
               <div className="response-progress">
 
                 <div>
-                  <span>Response capacity</span>
-                  <strong>72%</strong>
+
+                  <span>
+                    Response capacity
+                  </span>
+
+                  <strong>
+                    72%
+                  </strong>
+
                 </div>
 
+
                 <div className="progress-track">
+
                   <div className="progress-fill" />
+
                 </div>
 
               </div>
+
 
               <button className="response-button">
                 Open Response Matrix
@@ -235,4 +313,5 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;   
+
+export default Dashboard;

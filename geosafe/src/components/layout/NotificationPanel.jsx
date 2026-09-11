@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -12,7 +12,11 @@ import {
 } from "lucide-react";
 
 import "./NotificationPanel.css";
-import { notifications as initialNotifications } from "../../data/notifications";
+
+import {
+  subscribeToNotifications,
+  acknowledgeNotification as acknowledgeServiceNotification,
+} from "../../services/notificationService";
 
 
 function getNotificationIcon(type) {
@@ -35,36 +39,111 @@ function getNotificationIcon(type) {
 function NotificationPanel({ onClose }) {
   const navigate = useNavigate();
 
-  const [notificationList, setNotificationList] = useState(
-    initialNotifications
-  );
+
+  const [notificationList, setNotificationList] =
+    useState([]);
 
 
-  const unreadCount = notificationList.filter(
-    (notification) => notification.unread
-  ).length;
+  /*
+   * Listen for notification updates from the
+   * central GeoSafe notification service.
+   *
+   * The service sends the complete notification
+   * history when this component subscribes.
+   *
+   * When a new notification is pushed, the service
+   * sends only that new notification.
+   */
+  useEffect(() => {
+    const unsubscribe =
+      subscribeToNotifications(
+        (notificationData) => {
+
+          /*
+           * Initial subscription / notification
+           * state update.
+           */
+          if (Array.isArray(notificationData)) {
+            setNotificationList(
+              notificationData
+            );
+
+            return;
+          }
+
+
+          /*
+           * New real-time notification.
+           */
+          setNotificationList((current) => {
+
+            /*
+             * Prevent duplicate notifications
+             * if the same event is received again.
+             */
+            const alreadyExists =
+              current.some(
+                (notification) =>
+                  notification.id ===
+                  notificationData.id
+              );
+
+            if (alreadyExists) {
+              return current;
+            }
+
+
+            return [
+              notificationData,
+              ...current,
+            ];
+          });
+
+        }
+      );
+
+
+    return unsubscribe;
+  }, []);
+
+
+  const unreadCount =
+    notificationList.filter(
+      (notification) =>
+        notification.unread
+    ).length;
 
 
   function acknowledgeNotification(id) {
-    setNotificationList((current) =>
-      current.map((notification) =>
-        notification.id === id
-          ? {
-              ...notification,
-              unread: false,
-            }
-          : notification
-      )
-    );
+
+    /*
+     * Update the central notification service.
+     */
+    acknowledgeServiceNotification(id);
+
   }
 
 
   function viewIncident(notification) {
-    acknowledgeNotification(notification.id);
+
+    acknowledgeNotification(
+      notification.id
+    );
+
 
     onClose();
 
-    navigate(`/incidents?incident=${notification.incidentId}`);
+
+    if (!notification.incidentId) {
+      return;
+    }
+
+
+    navigate(
+      `/incidents?incident=${encodeURIComponent(
+        notification.incidentId
+      )}`
+    );
   }
 
 
@@ -72,14 +151,17 @@ function NotificationPanel({ onClose }) {
     <div className="notification-panel">
 
       {/* HEADER */}
+
       <div className="notification-panel-header">
 
         <div>
+
           <span className="notification-panel-eyebrow">
             SYSTEM ALERTS
           </span>
 
           <h3>
+
             Notifications
 
             {unreadCount > 0 && (
@@ -87,7 +169,9 @@ function NotificationPanel({ onClose }) {
                 {unreadCount}
               </span>
             )}
+
           </h3>
+
         </div>
 
 
@@ -103,89 +187,132 @@ function NotificationPanel({ onClose }) {
 
 
       {/* NOTIFICATIONS */}
+
       <div className="notification-list">
 
-        {notificationList.map((notification) => (
+        {notificationList.length === 0 ? (
 
-          <div
-            key={notification.id}
-            className={`notification-item notification-${notification.type} ${
-              notification.unread
-                ? "notification-item-unread"
-                : ""
-            }`}
-          >
+          <div className="notification-empty">
 
-            <div className="notification-icon">
-              {getNotificationIcon(notification.type)}
-            </div>
+            <Info size={20} />
 
+            <strong>
+              No notifications
+            </strong>
 
-            <div className="notification-content">
-
-              <div className="notification-item-top">
-
-                <strong>
-                  {notification.title}
-                </strong>
-
-                {notification.unread && (
-                  <span className="notification-unread-dot" />
-                )}
-
-              </div>
-
-
-              <p>
-                {notification.message}
-              </p>
-
-
-              <span className="notification-time">
-                {notification.time}
-              </span>
-
-
-              {/* ACTIONS */}
-              <div className="notification-actions">
-
-                <button
-                  className="notification-view-button"
-                  onClick={() =>
-                    viewIncident(notification)
-                  }
-                >
-                  <ArrowUpRight size={13} />
-                  View Incident
-                </button>
-
-
-                {notification.unread && (
-                  <button
-                    className="notification-ack-button"
-                    onClick={() =>
-                      acknowledgeNotification(
-                        notification.id
-                      )
-                    }
-                  >
-                    <Check size={13} />
-                    Acknowledge
-                  </button>
-                )}
-
-              </div>
-
-            </div>
+            <span>
+              System alerts will appear here.
+            </span>
 
           </div>
 
-        ))}
+        ) : (
+
+          notificationList.map(
+            (notification) => (
+
+              <div
+                key={notification.id}
+                className={`notification-item notification-${notification.type} ${
+                  notification.unread
+                    ? "notification-item-unread"
+                    : ""
+                }`}
+              >
+
+                <div className="notification-icon">
+
+                  {getNotificationIcon(
+                    notification.type
+                  )}
+
+                </div>
+
+
+                <div className="notification-content">
+
+                  <div className="notification-item-top">
+
+                    <strong>
+                      {notification.title}
+                    </strong>
+
+                    {notification.unread && (
+                      <span className="notification-unread-dot" />
+                    )}
+
+                  </div>
+
+
+                  <p>
+                    {notification.message}
+                  </p>
+
+
+                  <span className="notification-time">
+                    {notification.time}
+                  </span>
+
+
+                  {/* ACTIONS */}
+
+                  <div className="notification-actions">
+
+                    {notification.incidentId && (
+
+                      <button
+                        className="notification-view-button"
+                        onClick={() =>
+                          viewIncident(
+                            notification
+                          )
+                        }
+                      >
+
+                        <ArrowUpRight size={13} />
+
+                        View Incident
+
+                      </button>
+
+                    )}
+
+
+                    {notification.unread && (
+
+                      <button
+                        className="notification-ack-button"
+                        onClick={() =>
+                          acknowledgeNotification(
+                            notification.id
+                          )
+                        }
+                      >
+
+                        <Check size={13} />
+
+                        Acknowledge
+
+                      </button>
+
+                    )}
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            )
+          )
+
+        )}
 
       </div>
 
 
       {/* FOOTER */}
+
       <div className="notification-panel-footer">
 
         <button>

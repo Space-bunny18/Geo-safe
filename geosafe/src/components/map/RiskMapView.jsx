@@ -21,48 +21,85 @@ function getRiskColor(risk) {
 
   return "#38c98a";
 }
+
+
+/*
+  Handles map movement when a response
+  unit or field report is being tracked.
+*/
 function MapTracker({ targetPosition }) {
   const map = useMap();
 
   useEffect(() => {
-    if (!targetPosition) return;
+    if (!targetPosition) {
+      return;
+    }
 
-    map.flyTo(targetPosition, 14, {
-      duration: 1.2,
-    });
+    const [latitude, longitude] = targetPosition;
+
+    // Make sure the coordinates are valid
+    if (
+      typeof latitude !== "number" ||
+      typeof longitude !== "number" ||
+      Number.isNaN(latitude) ||
+      Number.isNaN(longitude)
+    ) {
+      return;
+    }
+
+    // Move the map to the tracked location
+    map.flyTo(
+      [latitude, longitude],
+      14,
+      {
+        duration: 1.2,
+        easeLinearity: 0.25,
+      }
+    );
+
   }, [map, targetPosition]);
 
   return null;
 }
 
 
-function RiskMap({ onZoneSelect, targetPosition }) {
-  const [mapMode, setMapMode] = useState("risk");
+function RiskMap({
+  onZoneSelect,
+  targetPosition,
+}) {
+  const [mapMode, setMapMode] =
+    useState("risk");
 
 
   const mapLayers = {
     risk: {
       label: "Live Risk",
-      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      attribution: "&copy; OpenStreetMap contributors",
+      url:
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      attribution:
+        "&copy; OpenStreetMap contributors",
     },
 
     terrain: {
       label: "Terrain",
-      url: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+      url:
+        "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
       attribution:
         "&copy; OpenStreetMap contributors, SRTM | OpenTopoMap",
     },
 
     roads: {
       label: "Road Network",
-      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      attribution: "&copy; OpenStreetMap contributors",
+      url:
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      attribution:
+        "&copy; OpenStreetMap contributors",
     },
   };
 
 
-  const activeLayer = mapLayers[mapMode];
+  const activeLayer =
+    mapLayers[mapMode];
 
 
   return (
@@ -79,20 +116,31 @@ function RiskMap({ onZoneSelect, targetPosition }) {
 
         <TileLayer
           key={mapMode}
-          attribution={activeLayer.attribution}
+          attribution={
+            activeLayer.attribution
+          }
           url={activeLayer.url}
         />
 
 
-        <ZoomControl position="bottomright" />
-        <MapTracker targetPosition={targetPosition} />
+        <ZoomControl
+          position="bottomright"
+        />
+
+
+        {/* TRACKING */}
+
+        <MapTracker
+          targetPosition={targetPosition}
+        />
 
 
         {/* RISK ZONES */}
 
         {riskZones.map((zone) => {
 
-          const riskColor = getRiskColor(zone.risk);
+          const riskColor =
+            getRiskColor(zone.risk);
 
 
           return (
@@ -100,6 +148,7 @@ function RiskMap({ onZoneSelect, targetPosition }) {
               key={zone.id}
               center={zone.position}
               radius={10}
+
               eventHandlers={{
                 click: () => {
                   if (onZoneSelect) {
@@ -107,13 +156,16 @@ function RiskMap({ onZoneSelect, targetPosition }) {
                   }
                 },
               }}
+
               pathOptions={{
                 color: riskColor,
                 fillColor: riskColor,
+
                 fillOpacity:
                   mapMode === "roads"
                     ? 0.55
                     : 0.72,
+
                 weight: 2,
               }}
             >
@@ -195,30 +247,45 @@ function RiskMap({ onZoneSelect, targetPosition }) {
       <div className="map-controls">
 
         <button
+          type="button"
           className={`map-control ${
-            mapMode === "risk" ? "active" : ""
+            mapMode === "risk"
+              ? "active"
+              : ""
           }`}
-          onClick={() => setMapMode("risk")}
+          onClick={() =>
+            setMapMode("risk")
+          }
         >
           Risk
         </button>
 
 
         <button
+          type="button"
           className={`map-control ${
-            mapMode === "terrain" ? "active" : ""
+            mapMode === "terrain"
+              ? "active"
+              : ""
           }`}
-          onClick={() => setMapMode("terrain")}
+          onClick={() =>
+            setMapMode("terrain")
+          }
         >
           Terrain
         </button>
 
 
         <button
+          type="button"
           className={`map-control ${
-            mapMode === "roads" ? "active" : ""
+            mapMode === "roads"
+              ? "active"
+              : ""
           }`}
-          onClick={() => setMapMode("roads")}
+          onClick={() =>
+            setMapMode("roads")
+          }
         >
           Roads
         </button>
