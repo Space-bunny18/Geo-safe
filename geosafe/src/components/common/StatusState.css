@@ -1,0 +1,126 @@
+.status-state {
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 28px;
+
+  text-align: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.015);
+}
+
+
+.status-state-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border-radius: 8px;
+
+  color: #72a9ff;
+
+  background: rgba(73, 140, 255, 0.08);
+
+  border: 1px solid rgba(73, 140, 255, 0.16);
+}
+
+
+.status-state strong {
+  color: #dce5f0;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+.status-state p {
+  max-width: 340px;
+
+  margin: 6px 0 0;
+
+  color: #718096;
+
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+
+.status-state-loading .status-state-icon {
+  animation: statusStateSpin 1.2s linear infinite;
+}
+
+
+.status-state-error .status-state-icon {
+  color: #ff6671;
+
+  background: rgba(255, 77, 90, 0.08);
+
+  border-color: rgba(255, 77, 90, 0.18);
+}
+
+
+.status-state-empty .status-state-icon {
+  color: #7f8da3;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+
+.status-state-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  margin-top: 14px;
+
+  padding: 7px 11px;
+
+  border: 1px solid rgba(73, 140, 255, 0.25);
+  border-radius: 5px;
+
+  background: rgba(73, 140, 255, 0.07);
+
+  color: #72a9ff;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.status-state-action:hover {
+  background: rgba(73, 140, 255, 0.13);
+
+  border-color: rgba(73, 140, 255, 0.4);
+}
+
+
+@keyframes statusStateSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

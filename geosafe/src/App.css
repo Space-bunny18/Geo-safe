@@ -579,27 +579,17 @@
 ================================ */
 
 @media (max-width: 900px) {
-  .sidebar {
-    width: 70px;
-    padding: 20px 8px;
-  }
-
-  .sidebar-brand {
-    justify-content: center;
-    padding: 0;
-  }
-
   .brand-name,
-  .brand-subtitle,
-  .sidebar-status span:not(.status-dot),
-  .nav-section-title,
-  .nav-item span,
-  .field-link div,
-  .settings-button span,
-  .authority-info,
-  .online-indicator {
-    display: none;
-  }
+.brand-subtitle,
+.sidebar-status span:not(.status-dot),
+.nav-section-title,
+.nav-label,
+.field-copy,
+.settings-button span,
+.authority-info,
+.online-indicator {
+  display: none !important;
+}
 
   .sidebar-status {
     justify-content: center;
@@ -8272,4 +8262,447 @@ html::-webkit-scrollbar-thumb:hover {
 .reports-drawer-actions button {
   flex: 1;
   min-width: 120px;
+}
+.legend-unit {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #72a9ff;
+  border: 2px solid rgba(114, 169, 255, 0.25);
+  box-shadow: 0 0 8px rgba(114, 169, 255, 0.45);
+}
+/* =========================================================
+   MAP INTELLIGENCE CONTROLS
+   ========================================================= */
+
+.map-intelligence-controls {
+  position: absolute;
+  top: 76px;
+  left: 18px;
+  z-index: 500;
+
+  width: 205px;
+
+  padding: 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+
+  background: rgba(10, 15, 23, 0.94);
+
+  box-shadow:
+    0 14px 35px rgba(0, 0, 0, 0.32);
+
+  backdrop-filter: blur(12px);
+}
+
+
+.map-intelligence-title {
+  margin-bottom: 7px;
+  padding: 2px 4px 6px;
+
+  color: #68778c;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+}
+
+
+.map-intelligence-toggle {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 8px 6px;
+
+  border: 0;
+  border-radius: 5px;
+
+  background: transparent;
+
+  color: #78869a;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+
+.map-intelligence-toggle:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #cbd5e1;
+}
+
+
+.map-intelligence-toggle.active {
+  color: #d8e0eb;
+}
+
+
+.map-intelligence-indicator {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 7px currentColor;
+}
+
+
+.map-intelligence-indicator.risk {
+  background: #ff4d5a;
+  color: #ff4d5a;
+}
+
+
+.map-intelligence-indicator.unit {
+  background: #72a9ff;
+  color: #72a9ff;
+}
+
+
+.map-intelligence-indicator.incident {
+  background: #ffffff;
+  color: #ffffff;
+}
+
+
+.map-intelligence-indicator.road {
+  background: #ff9f43;
+  color: #ff9f43;
+}
+
+
+.map-intelligence-check {
+  margin-left: auto;
+
+  font-size: 7px;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+
+  color: #4d5b70;
+}
+
+
+.map-intelligence-toggle.active
+.map-intelligence-check {
+  color: #54d79e;
+}
+
+
+/* =========================================================
+   ADDITIONAL MAP LEGEND MARKERS
+   ========================================================= */
+
+.legend-incident {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  border: 2px solid rgba(255, 255, 255, 0.25);
+
+  box-shadow:
+    0 0 7px rgba(255, 255, 255, 0.45);
+}
+
+
+.legend-road {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #ff9f43;
+
+  border: 2px solid rgba(255, 159, 67, 0.25);
+
+  box-shadow:
+    0 0 7px rgba(255, 159, 67, 0.45);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .map-intelligence-controls {
+    top: 70px;
+    left: 10px;
+
+    width: 185px;
+  }
+
+}
+/* OPERATIONAL CONTEXT */
+
+.risk-operational-context {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+
+  margin-top: 14px;
+  padding-top: 13px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.risk-operational-item {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  padding: 9px 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 6px;
+
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.risk-operational-item span {
+  color: #66758b;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+}
+
+.risk-operational-item strong {
+  color: #dce5f0;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+@media (max-width: 800px) {
+  .risk-operational-context {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* =================================
+   GEOSAFE COMPACT SIDEBAR
+   ================================= */
+
+@media (max-width: 900px) {
+
+  .sidebar {
+    width: 72px !important;
+    padding: 20px 8px 14px !important;
+    overflow-x: hidden;
+  }
+
+  .sidebar-brand {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .brand-name,
+  .brand-subtitle,
+  .sidebar-status span:not(.status-dot),
+  .nav-section-title,
+  .nav-label,
+  .field-link div,
+  .settings-button span,
+  .authority-info,
+  .online-indicator {
+    display: none !important;
+  }
+
+  .sidebar-status {
+    justify-content: center;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .sidebar-navigation {
+    overflow-x: hidden;
+  }
+
+  .nav-group {
+    width: 100%;
+    margin-bottom: 22px;
+  }
+
+  .nav-items {
+    width: 100%;
+    align-items: center;
+  }
+
+  .nav-item {
+    width: 42px !important;
+    min-width: 42px;
+    height: 42px;
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 !important;
+    margin: 2px 0;
+
+    border-radius: 8px;
+  }
+
+  /* Keep the actual Lucide icons visible */
+.nav-icon {
+  width: 22px !important;
+  height: 22px !important;
+
+  display: grid !important;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.nav-icon svg {
+  width: 17px !important;
+  height: 17px !important;
+
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+  .nav-item.active::before {
+    left: 0;
+    top: 9px;
+    bottom: 9px;
+  }
+
+  .field-link {
+    width: 42px !important;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 !important;
+    margin: 0 auto 7px;
+  }
+
+  .field-link > svg {
+    display: block !important;
+    width: 17px;
+    height: 17px;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .settings-button {
+    width: 42px !important;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 !important;
+    margin: 0 auto;
+  }
+
+  .settings-button > svg {
+    display: block !important;
+    width: 17px;
+    height: 17px;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .sidebar-footer {
+    justify-content: center;
+    padding: 11px 0 2px;
+  }
+
+  .authority-avatar {
+    width: 30px;
+    height: 30px;
+  }
+
+  .main-area {
+    width: calc(100% - 72px) !important;
+    margin-left: 72px !important;
+  }
+}
+
+
+
+/* =================================
+   FINAL COMPACT LAYOUT FIX
+   ================================= */
+
+@media (max-width: 900px) {
+
+  .sidebar {
+    width: 72px !important;
+  }
+
+  .main-area,
+  .main-content {
+    width: calc(100% - 72px) !important;
+    margin-left: 72px !important;
+  }
+
+  .page-container {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 22px !important;
+  }
+
+  .roads-page,
+  .incidents-page,
+  .response-page,
+  .field-page,
+  .reports-page,
+  .risk-map-page,
+  .settings-page {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+
+@media (max-width: 650px) {
+
+  .sidebar {
+    width: 64px !important;
+  }
+
+  .main-area,
+  .main-content {
+    width: calc(100% - 64px) !important;
+    margin-left: 64px !important;
+  }
+
+  .page-container {
+    padding: 18px !important;
+  }
 }

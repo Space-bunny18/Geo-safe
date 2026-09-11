@@ -217,7 +217,23 @@ export function acknowledgeNotification(
   );
 
 }
+export function markAllNotificationsAsRead() {
+  notificationHistory =
+    notificationHistory.map(
+      (notification) => ({
+        ...notification,
+        unread: false,
+      })
+    );
 
+  listeners.forEach(
+    (listener) => {
+      listener([
+        ...notificationHistory,
+      ]);
+    }
+  );
+}
 
 /**
  * Remove all stored notification history.

@@ -16,6 +16,7 @@ import "./NotificationPanel.css";
 import {
   subscribeToNotifications,
   acknowledgeNotification as acknowledgeServiceNotification,
+  markAllNotificationsAsRead,
 } from "../../services/notificationService";
 
 
@@ -314,10 +315,20 @@ function NotificationPanel({ onClose }) {
       {/* FOOTER */}
 
       <div className="notification-panel-footer">
+        {unreadCount > 0 && (
+          <button
+            type="button"
+            onClick={markAllNotificationsAsRead}
+          >
+            Mark all as read
+          </button>
+        )}
 
-        <button>
-          View all notifications
-        </button>
+        {unreadCount === 0 && (
+          <button type="button">
+            All notifications read
+          </button>
+        )}
 
       </div>
 

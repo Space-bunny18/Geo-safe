@@ -35,6 +35,8 @@ function Topbar() {
    */
   const [notificationList, setNotificationList] =
     useState([]);
+   const [currentTime, setCurrentTime] =
+     useState(new Date());
 
 
   /*
@@ -120,7 +122,15 @@ function Topbar() {
     };
 
   }, []);
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date());
+  }, 1000);
 
+  return () => {
+    clearInterval(timer);
+  };
+}, []);
 
   /*
    * Calculate the current unread notification
@@ -188,16 +198,27 @@ function Topbar() {
 
       <div className="topbar-right">
 
-        <div className="live-clock">
-
+       <div className="live-clock">
           <Clock3 size={15} />
 
           <span>
-            10 SEP 2026
+            {currentTime
+              .toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })
+              .toUpperCase()}
           </span>
 
           <span className="clock-time">
-            20:48 IST
+            {currentTime.toLocaleTimeString("en-IN", {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: false,
+            })}{" "}
+            IST
           </span>
 
         </div>

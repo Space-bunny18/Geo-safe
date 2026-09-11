@@ -63,6 +63,51 @@ function getTrackedUnit(trackId) {
 }
 
 
+/*
+  Operational relationship between each
+  risk zone and the current response state.
+  This is frontend mock intelligence for now
+  and can later be replaced with backend data.
+*/
+const operationalContext = {
+  1: {
+    incident: "GS-1042",
+    road: "NH-05",
+    roadStatus: "BLOCKED",
+    responseUnit: "R-07",
+    responseTeam: "Rapid Response Alpha",
+    eta: "08 min",
+  },
+
+  2: {
+    incident: "GS-1041",
+    road: "NH-05",
+    roadStatus: "BLOCKED",
+    responseUnit: "R-04",
+    responseTeam: "Mountain Rescue Unit",
+    eta: "14 min",
+  },
+
+  3: {
+    incident: "GS-1038",
+    road: "NH-205",
+    roadStatus: "RESTRICTED",
+    responseUnit: "R-11",
+    responseTeam: "Road Response Bravo",
+    eta: "21 min",
+  },
+
+  4: {
+    incident: "GS-1035",
+    road: "SH-13",
+    roadStatus: "AT RISK",
+    responseUnit: "R-03",
+    responseTeam: "Field Assessment Team",
+    eta: "32 min",
+  },
+};
+
+
 function RiskMap() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -82,6 +127,9 @@ function RiskMap() {
 
   const trackedUnit =
     getTrackedUnit(trackCoordinates);
+
+  const selectedOperationalContext =
+    operationalContext[selectedZone.id];
 
 
   function handleViewIncident() {
@@ -280,8 +328,15 @@ function RiskMap() {
                 </div>
 
                 <div>
-                  <span>CRITICAL ZONES</span>
-                  <strong>02</strong>
+
+                  <span>
+                    CRITICAL ZONES
+                  </span>
+
+                  <strong>
+                    02
+                  </strong>
+
                 </div>
 
               </div>
@@ -294,8 +349,15 @@ function RiskMap() {
                 </div>
 
                 <div>
-                  <span>HIGH RISK</span>
-                  <strong>02</strong>
+
+                  <span>
+                    HIGH RISK
+                  </span>
+
+                  <strong>
+                    02
+                  </strong>
+
                 </div>
 
               </div>
@@ -308,8 +370,15 @@ function RiskMap() {
                 </div>
 
                 <div>
-                  <span>ACTIVE INCIDENTS</span>
-                  <strong>04</strong>
+
+                  <span>
+                    ACTIVE INCIDENTS
+                  </span>
+
+                  <strong>
+                    04
+                  </strong>
+
                 </div>
 
               </div>
@@ -322,8 +391,15 @@ function RiskMap() {
                 </div>
 
                 <div>
-                  <span>ROAD BLOCKS</span>
-                  <strong>01</strong>
+
+                  <span>
+                    ROAD BLOCKS
+                  </span>
+
+                  <strong>
+                    01
+                  </strong>
+
                 </div>
 
               </div>
@@ -394,17 +470,77 @@ function RiskMap() {
                 </div>
 
 
+                {/* OPERATIONAL CONTEXT */}
+
+                <div className="risk-operational-context">
+
+                  <div className="risk-operational-item">
+
+                    <span>
+                      INCIDENT
+                    </span>
+
+                    <strong>
+                      {selectedOperationalContext?.incident || "—"}
+                    </strong>
+
+                  </div>
+
+
+                  <div className="risk-operational-item">
+
+                    <span>
+                      ROAD STATUS
+                    </span>
+
+                    <strong>
+                      {selectedOperationalContext?.roadStatus || "—"}
+                    </strong>
+
+                  </div>
+
+
+                  <div className="risk-operational-item">
+
+                    <span>
+                      RESPONSE UNIT
+                    </span>
+
+                    <strong>
+                      {selectedOperationalContext?.responseUnit || "—"}
+                    </strong>
+
+                  </div>
+
+
+                  <div className="risk-operational-item">
+
+                    <span>
+                      ETA
+                    </span>
+
+                    <strong>
+                      {selectedOperationalContext?.eta || "—"}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
                 {/* INCIDENT ACTION */}
 
                 <button
                   className="risk-view-incident"
                   onClick={handleViewIncident}
                 >
+
                   <span>
                     View Related Incident
                   </span>
 
                   <ArrowUpRight size={14} />
+
                 </button>
 
               </div>
