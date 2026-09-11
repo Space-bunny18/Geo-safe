@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import {
   Search,
@@ -37,7 +38,7 @@ function getSeverity(risk) {
 
 function Incidents() {
   const [searchParams] = useSearchParams();
-
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [severity, setSeverity] = useState("all");
   const [status, setStatus] = useState("all");
@@ -679,7 +680,14 @@ function Incidents() {
                 </button>
 
 
-                <button className="drawer-dispatch-button">
+                <button
+                  className="drawer-dispatch-button"
+                  onClick={() => {
+                    navigate(
+                      `/response?incident=${selectedIncident.id}`
+                    );
+                  }}
+                >
                   <Radio size={15} />
                   Dispatch Response
                 </button>

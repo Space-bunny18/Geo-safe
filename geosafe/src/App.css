@@ -7690,3 +7690,459 @@
   width: 100%;
   min-height: 620px;
 }
+/* =========================================================
+   GLOBAL GEOSAFE SCROLLBAR
+   ========================================================= */
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #263244 transparent;
+}
+
+html::-webkit-scrollbar {
+  width: 6px;
+}
+
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: #263244;
+  border-radius: 10px;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: #3a4a61;
+}
+/* =========================================================
+   RISK INTELLIGENCE PANEL
+   ========================================================= */
+
+.risk-intelligence-panel {
+  width: 100%;
+  margin-top: 18px;
+
+  padding: 20px;
+
+  border: 1px solid #1b2430;
+  border-radius: 8px;
+
+  background: #0b1016;
+}
+
+
+/* HEADER */
+
+.risk-intelligence-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+}
+
+.risk-intelligence-header h2 {
+  margin: 5px 0 0;
+
+  font-size: 17px;
+  font-weight: 650;
+
+  color: #f1f5f9;
+}
+
+.risk-intelligence-updated {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #657286;
+
+  font-size: 10px;
+}
+
+.risk-intelligence-updated span {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #38c98a;
+}
+
+
+/* METRICS */
+
+.risk-intelligence-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  border: 1px solid #1b2430;
+  border-radius: 7px;
+
+  overflow: hidden;
+
+  margin-bottom: 14px;
+}
+
+.risk-intelligence-metric {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  min-height: 72px;
+  padding: 14px 16px;
+
+  border-right: 1px solid #1b2430;
+}
+
+.risk-intelligence-metric:last-child {
+  border-right: none;
+}
+
+.risk-metric-icon {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #263244;
+  border-radius: 6px;
+
+  color: #8190a5;
+}
+
+.risk-intelligence-metric span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #657286;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  letter-spacing: 0.1em;
+}
+
+.risk-intelligence-metric strong {
+  display: block;
+
+  color: #e7edf5;
+
+  font-size: 20px;
+  line-height: 1;
+}
+
+.risk-intelligence-metric.critical .risk-metric-icon {
+  color: #ff6570;
+  border-color: rgba(255, 77, 90, 0.25);
+}
+
+.risk-intelligence-metric.high .risk-metric-icon {
+  color: #ffad62;
+  border-color: rgba(255, 159, 67, 0.25);
+}
+
+.risk-intelligence-metric.moderate .risk-metric-icon {
+  color: #f6d45d;
+  border-color: rgba(246, 201, 69, 0.25);
+}
+
+.risk-intelligence-metric.road .risk-metric-icon {
+  color: #6da8ff;
+  border-color: rgba(73, 140, 255, 0.25);
+}
+
+
+/* INTELLIGENCE GRID */
+
+.risk-intelligence-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 14px;
+}
+
+
+/* CARDS */
+
+.highest-risk-card,
+.environment-signals-card {
+  min-height: 150px;
+
+  padding: 16px;
+
+  border: 1px solid #1b2430;
+  border-radius: 7px;
+
+  background: #0d131a;
+}
+
+.risk-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+}
+
+.risk-critical-badge {
+  padding: 4px 7px;
+
+  border: 1px solid rgba(255, 77, 90, 0.25);
+  border-radius: 4px;
+
+  background: rgba(255, 77, 90, 0.07);
+
+  color: #ff6873;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+}
+
+
+/* HIGHEST RISK */
+
+.highest-risk-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.highest-risk-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 77, 90, 0.22);
+  border-radius: 7px;
+
+  background: rgba(255, 77, 90, 0.06);
+
+  color: #ff5965;
+}
+
+.highest-risk-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.highest-risk-info strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #edf2f7;
+
+  font-size: 14px;
+}
+
+.highest-risk-info span {
+  display: block;
+
+  color: #69778b;
+
+  font-size: 10px;
+}
+
+.highest-risk-score {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+
+.highest-risk-score strong {
+  color: #ff5965;
+
+  font-size: 28px;
+  line-height: 1;
+}
+
+.highest-risk-score span {
+  color: #59677a;
+
+  font-size: 9px;
+}
+
+
+/* ENVIRONMENT */
+
+.environment-signals {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 10px;
+}
+
+.environment-signal {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 9px;
+
+  border: 1px solid #1a232e;
+  border-radius: 5px;
+
+  background: #0a0f15;
+}
+
+.environment-signal-icon {
+  width: 27px;
+  height: 27px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 5px;
+
+  background: #111923;
+
+  color: #718096;
+}
+
+.environment-signal span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #59677a;
+
+  font-size: 7px;
+  font-weight: 600;
+
+  letter-spacing: 0.08em;
+}
+
+.environment-signal strong {
+  display: block;
+
+  color: #cdd6e1;
+
+  font-size: 11px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+  .risk-intelligence-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .risk-intelligence-metric:nth-child(2) {
+    border-right: none;
+  }
+
+  .risk-intelligence-metric:nth-child(-n + 2) {
+    border-bottom: 1px solid #1b2430;
+  }
+
+  .risk-intelligence-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .risk-intelligence-panel {
+    padding: 14px;
+  }
+
+  .risk-intelligence-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .risk-intelligence-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .risk-intelligence-metric {
+    border-right: none;
+    border-bottom: 1px solid #1b2430;
+  }
+
+  .risk-intelligence-metric:last-child {
+    border-bottom: none;
+  }
+
+  .environment-signals {
+    grid-template-columns: 1fr;
+  }
+
+}
+/* =========================================================
+   RISK MAP INCIDENT ACTION
+   ========================================================= */
+
+.risk-view-incident {
+  width: 100%;
+
+  margin-top: 16px;
+  padding: 9px 11px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  border: 1px solid rgba(73, 140, 255, 0.2);
+  border-radius: 5px;
+
+  background: rgba(73, 140, 255, 0.05);
+
+  color: #72a9ff;
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.risk-view-incident:hover {
+  background: rgba(73, 140, 255, 0.1);
+  border-color: rgba(73, 140, 255, 0.38);
+
+  color: #9bc2ff;
+}
+
+
+.risk-critical-badge.high {
+  border-color: rgba(255, 159, 67, 0.25);
+  background: rgba(255, 159, 67, 0.07);
+  color: #ffad62;
+}
+
+.risk-critical-badge.moderate {
+  border-color: rgba(246, 201, 69, 0.25);
+  background: rgba(246, 201, 69, 0.07);
+  color: #f6d45d;
+}
+
+.risk-critical-badge.low {
+  border-color: rgba(56, 201, 138, 0.25);
+  background: rgba(56, 201, 138, 0.07);
+  color: #54d79e;
+}

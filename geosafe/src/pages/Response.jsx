@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Search,
   Filter,
@@ -97,9 +98,24 @@ function getStatusClass(status) {
 
 
 function Response() {
+  const [searchParams] = useSearchParams();
+
   const [search, setSearch] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("all");
-  const [selectedResponse, setSelectedResponse] = useState(null);
+
+  const [selectedResponse, setSelectedResponse] = useState(() => {
+    const incidentId = searchParams.get("incident");
+
+    if (!incidentId) {
+      return null;
+    }
+
+    return (
+      responseData.find(
+        (response) => response.incident === incidentId
+      ) || null
+    );
+  });
 
 
   const filteredResponses = useMemo(() => {

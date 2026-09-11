@@ -22,7 +22,7 @@ function getRiskColor(risk) {
 }
 
 
-function RiskMap() {
+function RiskMap({ onZoneSelect }) {
   const [mapMode, setMapMode] = useState("risk");
 
 
@@ -85,6 +85,13 @@ function RiskMap() {
               key={zone.id}
               center={zone.position}
               radius={10}
+              eventHandlers={{
+                click: () => {
+                  if (onZoneSelect) {
+                    onZoneSelect(zone);
+                  }
+                },
+              }}
               pathOptions={{
                 color: riskColor,
                 fillColor: riskColor,
